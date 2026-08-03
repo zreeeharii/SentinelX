@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>SentinelX</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<script>
+setInterval(() => {
+    location.reload();
+}, 5000);
+</script>
+
+<body>
+
+<div class="container">
+
+    <h1>🛡 SentinelX</h1>
+
+    <p class="status">🟢 Monitoring Active</p>
+
+    <div class="cards">
+
+        <div class="card">
+            <h2>{{ total }}</h2>
+            <p>Total Events</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ high }}</h2>
+            <p>High Severity</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ auth }}</h2>
+            <p>Authentication</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ privilege }}</h2>
+            <p>Privilege Escalation</p>
+        </div>
+
+    </div>
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>Time</th>
+            <th>Event</th>
+            <th>Category</th>
+            <th>Severity</th>
+            <th>User</th>
+            <th>Service</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for event in events %}
+
+    <tr>
+
+        <td>{{ event[1] }}</td>
+
+        <td>{{ event[5] }}</td>
+
+        <td>{{ event[4] }}</td>
+
+        <td>
+
+            {% if event[6] == "HIGH" %}
+                <span class="high">HIGH</span>
+
+            {% elif event[6] == "MEDIUM" %}
+                <span class="medium">MEDIUM</span>
+
+            {% else %}
+                <span class="low">LOW</span>
+
+            {% endif %}
+
+        </td>
+
+        <td>{{ event[7] }}</td>
+
+        <td>{{ event[3] }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+        {% for event in events %}
+
+        <tr>
+
+            <td>{{ event[1] }}</td>
+            <td>{{ event[5] }}</td>
+            <td>{{ event[6] }}</td>
+            <td>{{ event[7] }}</td>
+            <td>{{ event[3] }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>
