@@ -47,6 +47,31 @@ setInterval(() => {
 
     </div>
 
+<a href="/export">
+
+<button type="button">
+Export CSV
+</button>
+
+</a>
+
+<form method="GET">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search events..."
+        value="{{ request.args.get('search','') }}"
+    >
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+<br>    
+
 <table>
 
     <thead>
@@ -120,6 +145,108 @@ setInterval(() => {
     </table>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<div class="charts">
+
+
+    <div class="chart-box">
+
+        <h3>Severity Analysis</h3>
+
+        <canvas id="severityChart"></canvas>
+
+    </div>
+
+
+
+    <div class="chart-box">
+
+        <h3>Event Categories</h3>
+
+        <canvas id="categoryChart"></canvas>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+const severityChart = document.getElementById(
+    "severityChart"
+);
+
+
+new Chart(severityChart, {
+
+    type: "doughnut",
+
+    data: {
+
+        labels: [
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+        ],
+
+        datasets: [{
+
+            data: [
+
+                {{ severity_data["HIGH"] }},
+                {{ severity_data["MEDIUM"] }},
+                {{ severity_data["LOW"] }}
+
+            ]
+
+        }]
+
+    }
+
+});
+
+
+
+
+const categoryChart = document.getElementById(
+    "categoryChart"
+);
+
+
+
+new Chart(categoryChart, {
+
+    type: "bar",
+
+    data: {
+
+        labels:
+
+        {{ category_data.keys() | list | safe }},
+
+
+        datasets: [{
+
+            label: "Events",
+
+            data:
+
+            {{ category_data.values() | list | safe }}
+
+        }]
+
+    }
+
+});
+
+
+</script>
 
 </body>
 </html>

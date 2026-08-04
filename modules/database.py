@@ -12,6 +12,7 @@ class Database:
 
         self.cursor = self.conn.cursor()
 
+
     def create_tables(self):
 
         self.cursor.execute("""
@@ -36,6 +37,7 @@ class Database:
 
         self.conn.commit()
 
+
     def insert_event(self, event):
 
         try:
@@ -57,7 +59,9 @@ class Database:
 
             VALUES(?,?,?,?,?,?,?,?,?)
 
-            """, (
+            """,
+
+            (
 
                 event["timestamp"],
                 event["hostname"],
@@ -73,8 +77,12 @@ class Database:
 
             self.conn.commit()
 
+
         except sqlite3.IntegrityError:
+
             pass
+
+
 
     def get_events(self):
 
@@ -85,5 +93,38 @@ class Database:
         ORDER BY id DESC
 
         """)
+
+        return self.cursor.fetchall()
+
+
+
+    def search_events(self, keyword):
+
+        self.cursor.execute("""
+
+        SELECT *
+        FROM events
+
+        WHERE
+
+            event LIKE ?
+            OR user LIKE ?
+            OR service LIKE ?
+            OR category LIKE ?
+            OR severity LIKE ?
+
+        ORDER BY id DESC
+
+        """,
+
+        (
+
+            f"%{keyword}%",
+            f"%{keyword}%",
+            f"%{keyword}%",
+            f"%{keyword}%",
+            f"%{keyword}%"
+
+        ))
 
         return self.cursor.fetchall()
