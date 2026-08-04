@@ -4,5 +4,4 @@ __pycache__/
 database/events.db
 .vscode/
 logs/
-screenshots/
 *.log
